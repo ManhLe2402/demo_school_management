@@ -5,6 +5,8 @@ import { AppService } from "./app.service";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { SchoolModule } from "./school/school.module";
+import { TeacherModule } from "./teacher/teacher.module";
+import { SubjectModule } from "./subject/subject.module";
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { SchoolModule } from "./school/school.module";
         };
       },
     }),
-    SchoolModule
+    SchoolModule,
+    TeacherModule,
+    SubjectModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,7 +19,7 @@ import {
 import { EntityCommon } from "src/common/common.entity";
 import { TeacherEntity } from "src/teacher/teacher.entity";
 
-@Entity({ schema: "school_managegment" })
+@Entity({ schema: "school_management" })
 export class SchoolEntity extends EntityCommon {
   @Property({ type: "text" })
   schoolName: string;

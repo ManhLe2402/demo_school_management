@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   IsDate,
   IsEmail,
@@ -6,6 +7,7 @@ import {
   IsString,
   MinLength,
 } from "class-validator";
+import { DTOCommon } from "src/common/common.dto";
 
 export class CreateSchoolDTO {
   @IsNotEmpty()

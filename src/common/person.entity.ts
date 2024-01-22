@@ -1,24 +1,25 @@
 import { Property } from "@mikro-orm/core";
+import { EntityCommon } from "./common.entity";
 
-export class PersonEntiy{
-  @Property({type:"text"})
-  firstName:string
+export class PersonEntiy extends EntityCommon {
+  @Property({ type: "text" })
+  firstName: string;
 
-  @Property({type:"text"})
-  lastName!:string
-  
-  @Property()
-  address!:string
+  @Property({ type: "text" })
+  lastName!: string;
 
   @Property()
-  gender!:string
-
-  @Property({type:"timestamptz"})
-  dateOfBirth!: Date
+  address!: string;
 
   @Property()
-  phone!:string
+  gender!: string;
+
+  @Property({ type: "timestamptz" })
+  dateOfBirth!: Date;
 
   @Property()
-  email:string=null
+  phone!: string;
+
+  @Property()
+  email: string = null;
 }

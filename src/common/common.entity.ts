@@ -2,7 +2,7 @@ import { Entity, PrimaryKey, Property, Unique } from "@mikro-orm/core";
 import { Expose } from "class-transformer";
 
 export class EntityCommon {
-  @PrimaryKey({ type: "text" })
+  @PrimaryKey({ type: "uuid" })
   @Unique()
   id!: string;
 

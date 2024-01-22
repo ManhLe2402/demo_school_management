@@ -10,20 +10,14 @@ import { PersonEntiy } from "src/common/person.entity";
 import { SchoolEntity } from "src/school/school.entity";
 import { Mixin } from "ts-mixer";
 
-@Entity({ schema: "school_managegment" })
-export class TeacherEntity extends Mixin(EntityCommon, PersonEntiy) {
-  @PrimaryKey({ type: "uuid" })
-  id: string;
-
+@Entity({ schema: "school_management" })
+export class TeacherEntity extends PersonEntiy {
   @Property()
-  firstName: string;
+  yearStartTeaching!: number;
 
-  @Property()
-  lastName: string;
+  @Property({ type: "text", default: "active" })
+  teachingStatus!: string;
 
-  @Property({ type: "timestamptz" })
-  dateOfBirth: Date;
-
-  @ManyToOne(() => SchoolEntity, { onUpdate: "cascade", onDelete: "cascade" })
-  schoolId!: SchoolEntity;
+  @ManyToOne(() => SchoolEntity)
+  schoolId!: string;
 }
