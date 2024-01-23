@@ -4,9 +4,10 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ValidationPipe } from "@nestjs/common";
 import { MikroORM } from "@mikro-orm/core";
-
+import * as dotenv from "dotenv";
 async function bootstrap() {
   const PORT = 8080;
+  dotenv.config();
   const app = await NestFactory.create(AppModule);
   await app.get(MikroORM).getSchemaGenerator().ensureDatabase();
   const updateDump = await app

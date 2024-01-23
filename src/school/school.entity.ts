@@ -17,6 +17,7 @@ import {
   MinLength,
 } from "class-validator";
 import { EntityCommon } from "src/common/common.entity";
+import { StudentEntity } from "src/student/student.entity";
 import { TeacherEntity } from "src/teacher/teacher.entity";
 
 @Entity({ schema: "school_management" })
@@ -43,4 +44,7 @@ export class SchoolEntity extends EntityCommon {
   description: string = "";
   @OneToMany(() => TeacherEntity, (teacher) => teacher.schoolId)
   teachers = new Collection<TeacherEntity>(this);
+
+  @OneToMany(() => StudentEntity, (student) => student.schoolId)
+  students = new Collection<StudentEntity>(this);
 }

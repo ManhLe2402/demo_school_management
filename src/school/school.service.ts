@@ -2,7 +2,7 @@ import { EntityManager } from "@mikro-orm/core";
 import { Injectable } from "@nestjs/common";
 import { SchoolEntity } from "./school.entity";
 import { v4 as uuidv4 } from "uuid";
-import { CreateSchoolDTO } from "./school.dto";
+import { CreateSchoolDTO, GetDataSchoolDTO } from "./school.dto";
 @Injectable()
 export class SchoolService {
   constructor(private readonly em: EntityManager) {}

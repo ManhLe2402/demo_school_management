@@ -7,6 +7,8 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { SchoolModule } from "./school/school.module";
 import { TeacherModule } from "./teacher/teacher.module";
 import { SubjectModule } from "./subject/subject.module";
+import { SubjectClassModule } from "./subjectClass/subjectClass.module";
+import { StudentModule } from "./student/student.module";
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import { SubjectModule } from "./subject/subject.module";
     }),
     SchoolModule,
     TeacherModule,
-    SubjectModule
+    SubjectModule,
+    SubjectClassModule,
+    StudentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
