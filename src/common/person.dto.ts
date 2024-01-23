@@ -1,5 +1,3 @@
-import { Property } from "@mikro-orm/core";
-import { DTOCommon } from "./common.dto";
 import {
   IsDate,
   IsEmail,
@@ -10,20 +8,25 @@ import {
   Length,
   isNotEmpty,
 } from "class-validator";
+import { Expose } from "class-transformer";
 
 export class CreatePersonDTO {
   @IsString()
   @IsNotEmpty()
+  @Expose()
   firstName: string;
 
   @IsString()
   @IsNotEmpty()
+  @Expose()
   lastName!: string;
 
   @IsString()
   @IsNotEmpty()
+  @Expose()
   address!: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   @IsIn(["male", "female"])
@@ -31,13 +34,16 @@ export class CreatePersonDTO {
 
   @IsString()
   @IsNotEmpty()
+  @Expose()
   dateOfBirth: Date;
 
   @IsNotEmpty()
   @Length(10)
+  @Expose()
   phone: string;
 
   @IsEmail()
+  @Expose()
   @IsNotEmpty()
   email: string = null;
 }

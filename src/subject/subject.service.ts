@@ -12,4 +12,17 @@ export class SubjectService {
     await this.em.persistAndFlush(newSubject);
     return newSubject;
   }
+
+  async findAll(page = 1, pageSize = 20) {
+    try {
+      const data = await this.em.findAndCount(
+        SubjectEntity,
+        {},
+        { limit: pageSize, offset: (page - 1) * pageSize }
+      );
+      return data;
+    } catch (error) {
+      console.log("findAllSubjectService", error);
+    }
+  }
 }
