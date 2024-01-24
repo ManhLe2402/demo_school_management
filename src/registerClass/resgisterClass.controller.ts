@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
@@ -28,8 +30,9 @@ export class RegisterClassController {
   ): Promise<ISuccessResponse<CreateRegisterClassDTO>> {
     return await this.registerClassService.create(registerClassForm);
   }
-  @Post("find")
-  async find(@Body() formSearch: SearchRegisterClassDTO) {
+  @Get()
+  async find(@Query() formSearch: SearchRegisterClassDTO) {
+    console.log(formSearch);
     return await this.registerClassService.find(formSearch);
   }
 
