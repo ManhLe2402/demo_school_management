@@ -20,12 +20,6 @@ import { plainToClass, plainToInstance } from "class-transformer";
 export class SchoolController {
   constructor(private readonly schoolService: SchoolService) {}
   @Post()
-  @UsePipes(
-    new ValidationPipe({
-      transform: true,
-      transformOptions: { strategy: "excludeAll" },
-    })
-  )
   async create(
     @Body() school: CreateSchoolDTO
   ): Promise<{ status: string; data: CreateSchoolDTO }> {
@@ -42,7 +36,6 @@ export class SchoolController {
     const schoolConvert = await plainToClass(GetDataSchoolDTO, school, {
       excludeExtraneousValues: true,
     });
-
     return schoolConvert;
   }
 }

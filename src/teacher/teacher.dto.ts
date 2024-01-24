@@ -1,4 +1,4 @@
-import { Expose, Transform } from "class-transformer";
+import { Exclude, Expose, Transform } from "class-transformer";
 import {
   IsIn,
   IsNotEmpty,
@@ -29,4 +29,25 @@ export class CreateTeacherDTO extends CreatePersonDTO {
 
   @Transform(({ value }) => value, { toClassOnly: true })
   unwantedProperty?: any;
+}
+
+export class GetTeacherDTO extends CreateTeacherDTO {
+  @Expose()
+  id: string;
+
+  @Exclude()
+  teachingStatus: string;
+
+  @Exclude()
+  schoolId: string;
+}
+
+export class UpdateTeacherDTO extends CreateTeacherDTO {
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
+  @Exclude()
+  unwantedProperty: never;
 }

@@ -58,4 +58,13 @@ export class SubjectClassService {
       throw new HttpException("Update Fail", HttpStatus.BAD_REQUEST);
     }
   }
+  async delete(id: uuidv4) {
+    try {
+      const subjectClass = await this.em.findOneOrFail(SubjectClassEntity, id);
+      await this.em.removeAndFlush(subjectClass);
+      return `Delete item ID = ${id.id}`;
+    } catch (error) {
+      throw new HttpException("Delete Fail", HttpStatus.BAD_REQUEST);
+    }
+  }
 }

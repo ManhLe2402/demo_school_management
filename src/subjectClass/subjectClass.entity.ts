@@ -1,5 +1,12 @@
-import { Entity, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
+import {
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  Property,
+} from "@mikro-orm/core";
 import { EntityCommon } from "src/common/common.entity";
+import { ResgisterClassEntity } from "src/registerClass/registerClass.entity";
 import { SubjectEntity } from "src/subject/subject.entity";
 import { TeacherEntity } from "src/teacher/teacher.entity";
 
@@ -30,4 +37,10 @@ export class SubjectClassEntity extends EntityCommon {
 
   @ManyToOne(() => SubjectEntity)
   subjectId: string;
+
+  @OneToMany(
+    () => ResgisterClassEntity,
+    (registerSubjectClass) => registerSubjectClass.subjectClassId
+  )
+  subjectClass = new Collection<ResgisterClassEntity>(this);
 }
