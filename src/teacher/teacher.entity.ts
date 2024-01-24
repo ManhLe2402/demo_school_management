@@ -4,14 +4,11 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryKey,
   Property,
 } from "@mikro-orm/core";
-import { EntityCommon } from "src/common/common.entity";
 import { PersonEntiy } from "src/common/person.entity";
 import { SchoolEntity } from "src/school/school.entity";
 import { SubjectClassEntity } from "src/subjectClass/subjectClass.entity";
-import { Mixin } from "ts-mixer";
 
 @Entity({ schema: "school_management" })
 export class TeacherEntity extends PersonEntiy {
@@ -24,6 +21,8 @@ export class TeacherEntity extends PersonEntiy {
   @ManyToOne(() => SchoolEntity)
   schoolId!: string;
 
-  @OneToMany(() => SubjectClassEntity, (subject) => subject.teacherId)
+  @OneToMany(() => SubjectClassEntity, (subject) => subject.teacherId, {
+    cascade: [Cascade.REMOVE, Cascade.ALL],
+  })
   subjectClass = new Collection<SubjectClassEntity>(this);
 }

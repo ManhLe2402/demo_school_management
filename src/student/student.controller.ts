@@ -13,12 +13,6 @@ import { ISuccessResponse } from "src/common/response/success.response";
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
   @Post()
-  @UsePipes(
-    new ValidationPipe({
-      transform: true,
-      transformOptions: { strategy: "excludeAll" },
-    })
-  )
   async create(
     @Body() student: CreateStudentDTO
   ): Promise<ISuccessResponse<CreateStudentDTO>> {

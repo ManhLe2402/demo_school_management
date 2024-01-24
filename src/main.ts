@@ -18,7 +18,12 @@ async function bootstrap() {
       safe: true,
     });
   console.log("\n\nSTART UPDATE \n\n", updateDump, "\n\nEND UPDATE\n\n");
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { strategy: "excludeAll" },
+    })
+  );
   await app.listen(PORT, () => console.log(`App run in ${PORT}`));
 }
 bootstrap();
