@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import {
   CreateSubjectClassDTO,
+  SearchSubjectClassDTO,
   UpdateSubjectClassDTO,
 } from "./subjectClass.dto";
 import { ISuccessResponse } from "src/common/response/success.response";
@@ -28,11 +29,17 @@ export class SubjectClassService {
     return newSubjectClass;
   }
 
-  async fetchDataWithPagination(page = 1, pageSize = 20) {
+  async find(searchSubjectClass: SearchSubjectClassDTO) {
     try {
+      const { page, pageSize, id, teacherId, subjectId } = searchSubjectClass;
+      const conditionSearch = {
+        ...(id ? { id } : {}),
+        ...(teacherId ? { teacherId } : {}),
+        ...(subjectId ? { subjectId } : {}),
+      };
       const data = await this.em.findAndCount(
         SubjectClassEntity,
-        {},
+        conditionSearch,
         {
           populate: ["subjectId", "teacherId"],
           limit: pageSize,
@@ -43,6 +50,15 @@ export class SubjectClassService {
     } catch (error) {
       console.log("fetchDataWithPagination", error);
     }
+  }
+  async findOne(id: uuidv4) {
+    const subjectClassRecord = await this.em.findOne(SubjectClassEntity, id, {
+      populate: ["subjectId", "teacherId"],
+    });
+    if (!subjectClassRecord) {
+      throw new HttpException("Subject Class Not Found", HttpStatus.NOT_FOUND);
+    }
+    return subjectClassRecord;
   }
 
   async update(newSubjectClass: UpdateSubjectClassDTO) {

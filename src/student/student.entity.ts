@@ -6,7 +6,7 @@ import {
   Property,
 } from "@mikro-orm/core";
 
-import { PersonEntiy } from "src/common/person.entity";
+import { PersonEntiy } from "src/common/person/person.entity";
 import { ResgisterClassEntity } from "src/registerClass/registerClass.entity";
 import { SchoolEntity } from "src/school/school.entity";
 

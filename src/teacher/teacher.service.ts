@@ -1,11 +1,15 @@
 import { EntityManager, wrap } from "@mikro-orm/core";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { CreateTeacherDTO, UpdateTeacherDTO } from "./teacher.dto";
+import {
+  CreateTeacherDTO,
+  GetTeacherDTO,
+  SearchTeacherDTO,
+  UpdateTeacherDTO,
+} from "./teacher.dto";
 import { v4 as uuidv4 } from "uuid";
 import { TeacherEntity } from "./teacher.entity";
 import { ISuccessResponse } from "src/common/response/success.response";
-import { SearchTeacherDTO } from "src/style/dto/search.dto";
-import { plainToInstance } from "class-transformer";
+import { plainToClass } from "class-transformer";
 
 @Injectable()
 export class TeacherService {
@@ -16,10 +20,17 @@ export class TeacherService {
     await this.em.persistAndFlush(newTeacher);
     return teacher;
   }
+  async findOne(id: uuidv4) {
+    const teacherRecord = await this.em.findOne(TeacherEntity, id);
+    if (!teacherRecord) {
+      throw new HttpException("Teacher Not Found", HttpStatus.NOT_FOUND);
+    }
+    return teacherRecord;
+  }
 
   async find(searchTeacher: SearchTeacherDTO) {
     const { id, fullName, page = 1, pageSize = 30 } = searchTeacher;
-    const teacherList = await this.em.find(
+    const teacherList = await this.em.findAndCount(
       TeacherEntity,
       {
         ...(id ? { id } : {}),
@@ -32,9 +43,8 @@ export class TeacherService {
             }
           : {}),
       },
-      { disableIdentityMap: true }
+      { offset: (page - 1) * pageSize, disableIdentityMap: true }
     );
-    console.log(searchTeacher);
     return teacherList;
   }
   async update(

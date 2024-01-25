@@ -1,14 +1,17 @@
-import { Expose, Transform } from "class-transformer";
+import { Exclude, Expose, Transform } from "class-transformer";
 import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
+  IsUUID,
   MinLength,
 } from "class-validator";
+import { CommonSearchDTO } from "src/common/common.dto";
 
 export class CreateSchoolDTO {
-  @Expose({ toPlainOnly: true })
+  @Expose()
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
@@ -41,6 +44,7 @@ export class CreateSchoolDTO {
   @IsNumber()
   typeOfEducation: number;
 
+  @IsOptional()
   @Expose()
   @IsString()
   description: string = "";
@@ -49,7 +53,23 @@ export class CreateSchoolDTO {
   unwantedProperty?: any;
 }
 
-export class GetDataSchoolDTO extends CreateSchoolDTO {
+export class GetSchoolDTO extends CreateSchoolDTO {
   @Expose()
   id: string;
+}
+
+export class UpdateSchoolDTO extends CreateSchoolDTO {
+  @IsNotEmpty()
+  @Expose()
+  @IsUUID()
+  id: string;
+
+  @Exclude()
+  unwantedProperty?: never;
+}
+export class SearchSchoolDTO extends CommonSearchDTO {
+  @IsOptional()
+  @IsString()
+  @Expose()
+  schoolName: string;
 }

@@ -1,5 +1,5 @@
 import { Expose } from "class-transformer";
-import { IsDate, IsUUID } from "class-validator";
+import { IsDate, IsOptional, IsUUID } from "class-validator";
 
 export class CommonDTO {
   @IsUUID()
@@ -17,4 +17,20 @@ export class CommonDTO {
   @IsDate()
   @Expose({ toClassOnly: true })
   delete: Date;
+}
+
+export class PaginationDTO {
+  @IsOptional()
+  @Expose()
+  page: number;
+
+  @IsOptional()
+  @Expose()
+  pageSize: number;
+}
+export class CommonSearchDTO extends PaginationDTO {
+  @Expose()
+  @IsOptional()
+  @IsUUID()
+  id: string;
 }

@@ -6,10 +6,10 @@ import { SubjectClassEntity } from "src/subjectClass/subjectClass.entity";
 @Entity({ schema: "school_management" })
 export class ResgisterClassEntity extends EntityCommon {
   @ManyToOne(() => SubjectClassEntity)
-  subjectClassId: string;
+  subjectClassId: SubjectClassEntity;
 
   @ManyToOne(() => StudentEntity)
-  studentId: string;
+  studentId: StudentEntity;
 
   @Property({ default: null })
   status: string;

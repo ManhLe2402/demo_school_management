@@ -6,7 +6,7 @@ import {
   OneToMany,
   Property,
 } from "@mikro-orm/core";
-import { PersonEntiy } from "src/common/person.entity";
+import { PersonEntiy } from "src/common/person/person.entity";
 import { SchoolEntity } from "src/school/school.entity";
 import { SubjectClassEntity } from "src/subjectClass/subjectClass.entity";
 

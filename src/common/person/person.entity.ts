@@ -1,5 +1,5 @@
 import { Property } from "@mikro-orm/core";
-import { EntityCommon } from "./common.entity";
+import { EntityCommon } from "../common.entity";
 
 export class PersonEntiy extends EntityCommon {
   @Property({ type: "text" })

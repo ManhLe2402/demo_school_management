@@ -3,12 +3,14 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   Length,
   isNotEmpty,
 } from "class-validator";
-import { CreatePersonDTO } from "src/common/person.dto";
+import { CommonSearchDTO } from "src/common/common.dto";
+import { CreatePersonDTO } from "src/common/person/person.dto";
 
 export class CreateTeacherDTO extends CreatePersonDTO {
   @IsNumber()
@@ -28,15 +30,12 @@ export class CreateTeacherDTO extends CreatePersonDTO {
   schoolId: string;
 
   @Transform(({ value }) => value, { toClassOnly: true })
-  unwantedProperty?: any;
+  unknowProperty: unknown;
 }
 
 export class GetTeacherDTO extends CreateTeacherDTO {
   @Expose()
   id: string;
-
-  @Exclude()
-  teachingStatus: string;
 
   @Exclude()
   schoolId: string;
@@ -49,5 +48,10 @@ export class UpdateTeacherDTO extends CreateTeacherDTO {
   id: string;
 
   @Exclude()
-  unwantedProperty: never;
+  unknowProperty: never;
+}
+
+export class SearchTeacherDTO extends CommonSearchDTO {
+  @Expose()
+  fullName: string;
 }

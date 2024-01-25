@@ -16,10 +16,14 @@ import {
 import { SubjectClassService } from "./subjectClass.service";
 import {
   CreateSubjectClassDTO,
+  GetSubjectClassDTO,
+  SearchSubjectClassDTO,
   UpdateSubjectClassDTO,
 } from "./subjectClass.dto";
 import { EntityManager, UuidType } from "@mikro-orm/core";
 import { ISuccessResponse } from "src/common/response/success.response";
+import { plainToClass } from "class-transformer";
+import { GetTeacherDTO } from "src/teacher/teacher.dto";
 
 @Controller("subjectclass")
 export class SubjectClassController {
@@ -43,11 +47,35 @@ export class SubjectClassController {
     };
   }
   @Get()
-  fetchDataWithPagination(
-    @Query("page") page: number = 1,
-    @Query("pageSize") pageSize: number = 20
-  ) {
-    return this.subjectClassService.fetchDataWithPagination(page, pageSize);
+  async find(
+    @Query() searchSubjectClass: SearchSubjectClassDTO
+  ): Promise<
+    ISuccessResponse<{ count: number; listSubjectClass: GetSubjectClassDTO[] }>
+  > {
+    const dataRecords = await this.subjectClassService.find(searchSubjectClass);
+    let listSubjectClass: GetSubjectClassDTO[] = [];
+    if (dataRecords[0]) {
+      listSubjectClass = dataRecords[0].map((item) =>
+        plainToClass(GetSubjectClassDTO, item, {
+          excludeExtraneousValues: true,
+        })
+      );
+    }
+    return {
+      status: "Get List Subject Class Successfully",
+      data: { count: dataRecords[1], listSubjectClass },
+    };
+  }
+
+  @Get(":id")
+  async findOne(
+    @Param("id") id: UuidType
+  ): Promise<ISuccessResponse<GetSubjectClassDTO>> {
+    const subjectClassRecord = await this.subjectClassService.findOne(id);
+    const data = await plainToClass(GetSubjectClassDTO, subjectClassRecord, {
+      excludeExtraneousValues: true,
+    });
+    return { status: "Get Detail Subject Class Successfully", data };
   }
   @Put()
   async update(

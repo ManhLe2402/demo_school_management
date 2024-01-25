@@ -14,10 +14,11 @@ import { TeacherService } from "./teacher.service";
 import {
   CreateTeacherDTO,
   GetTeacherDTO,
+  SearchTeacherDTO,
   UpdateTeacherDTO,
 } from "./teacher.dto";
 import { ISuccessResponse } from "src/common/response/success.response";
-import { PaginationDTO, SearchTeacherDTO } from "src/style/dto/search.dto";
+
 import { plainToClass, plainToInstance } from "class-transformer";
 import { UuidType } from "@mikro-orm/core";
 
@@ -34,20 +35,31 @@ export class TeacherController {
   @Get()
   async find(
     @Query() searchTeacher: SearchTeacherDTO
-  ): Promise<ISuccessResponse<GetTeacherDTO[]>> {
-    // console.log(
-    //   plainToClass(PaginationDTO, searchTeacher, {
-    //     excludeExtraneousValues: true,
-    //   })
-    // );
+  ): Promise<
+    ISuccessResponse<{ count: number; teacherList: GetTeacherDTO[] }>
+  > {
     const dataFind = await this.teacherService.find(searchTeacher);
-    let data: GetTeacherDTO[] = [];
-    if (dataFind) {
-      data = dataFind.map((item) =>
+    let teacherList: GetTeacherDTO[] = [];
+    if (dataFind[0]) {
+      teacherList = dataFind[0].map((item) =>
         plainToClass(GetTeacherDTO, item, { excludeExtraneousValues: true })
       );
     }
-    return { status: "Get Data SuccessFully", data };
+    return {
+      status: "Get Data SuccessFully",
+      data: { count: dataFind[1], teacherList },
+    };
+  }
+  @Get(":id")
+  async findOne(
+    @Param("id") id: UuidType
+  ): Promise<ISuccessResponse<GetTeacherDTO>> {
+    const teacherRecord = await this.teacherService.findOne(id);
+    console.log(teacherRecord);
+    const data = plainToClass(GetTeacherDTO, teacherRecord, {
+      excludeExtraneousValues: true,
+    });
+    return { status: "Get Detail Successfuly", data };
   }
   @Put()
   async update(

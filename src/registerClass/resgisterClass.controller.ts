@@ -12,12 +12,15 @@ import {
 } from "@nestjs/common";
 import {
   CreateRegisterClassDTO,
+  GetRegisterClassDTO,
+  SearchRegisterClassDTO,
   UpdateRegisterClassDTO,
 } from "./registerClass.dto";
 import { ISuccessResponse } from "src/common/response/success.response";
 import { ResgisterSubjectClassService } from "./registerClass.Service";
-import { SearchRegisterClassDTO } from "src/style/dto/search.dto";
+
 import { UuidType } from "@mikro-orm/core";
+import { plainToClass } from "class-transformer";
 
 @Controller("register_class")
 export class RegisterClassController {
@@ -31,9 +34,28 @@ export class RegisterClassController {
     return await this.registerClassService.create(registerClassForm);
   }
   @Get()
-  async find(@Query() formSearch: SearchRegisterClassDTO) {
-    console.log(formSearch);
-    return await this.registerClassService.find(formSearch);
+  async find(
+    @Query() formSearch: SearchRegisterClassDTO
+  ): Promise<
+    ISuccessResponse<{
+      count: number;
+      registerClassList: GetRegisterClassDTO[];
+    }>
+  > {
+    const registerClassRecords =
+      await this.registerClassService.find(formSearch);
+    let registerClassList: GetRegisterClassDTO[] = [];
+    if (registerClassRecords[0]) {
+      registerClassList = registerClassRecords[0].map((item) =>
+        plainToClass(GetRegisterClassDTO, item, {
+          excludeExtraneousValues: true,
+        })
+      );
+    }
+    return {
+      status: "Get Register Class List Successfully",
+      data: { count: registerClassRecords[1], registerClassList },
+    };
   }
 
   @Put()

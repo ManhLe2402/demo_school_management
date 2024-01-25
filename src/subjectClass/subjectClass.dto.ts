@@ -1,12 +1,17 @@
-import { Exclude, Expose, Transform } from "class-transformer";
+import { Exclude, Expose, Transform, Type } from "class-transformer";
 import {
   IsDateString,
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
 } from "class-validator";
+import { CommonSearchDTO } from "src/common/common.dto";
+import { GetSubjectDTO } from "src/subject/subject.dto";
+
+import { GetTeacherDTO } from "src/teacher/teacher.dto";
 
 export class CreateSubjectClassDTO {
   @Expose()
@@ -58,9 +63,18 @@ export class CreateSubjectClassDTO {
   unwantedProperty?: any;
 }
 
+@Exclude()
 export class GetSubjectClassDTO extends CreateSubjectClassDTO {
   @Expose({ toClassOnly: true })
   id: string;
+
+  @Expose()
+  @Type(() => GetSubjectDTO)
+  subjectId: string;
+
+  @Expose()
+  @Type(() => GetTeacherDTO)
+  teacherId: string;
 }
 export class UpdateSubjectClassDTO extends CreateSubjectClassDTO {
   @Expose()
@@ -70,3 +84,21 @@ export class UpdateSubjectClassDTO extends CreateSubjectClassDTO {
   @Exclude()
   unwantedProperty: never;
 }
+export class SearchSubjectClassDTO extends CommonSearchDTO {
+  @IsOptional()
+  @IsUUID()
+  subjectId: string;
+
+  @IsOptional()
+  @IsUUID()
+  teacherId: string;
+
+  @IsOptional()
+  @IsNumber()
+  academicYear: number;
+}
+
+// export class GetListSubjectClassDTO extends GetSubjectClassDTO {
+//   @Expose()
+//   subjectId: GetDataSubjectDTO;
+// }

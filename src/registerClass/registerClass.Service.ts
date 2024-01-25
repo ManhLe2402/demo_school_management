@@ -2,6 +2,7 @@ import { EntityManager, wrap } from "@mikro-orm/core";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import {
   CreateRegisterClassDTO,
+  SearchRegisterClassDTO,
   UpdateRegisterClassDTO,
 } from "./registerClass.dto";
 import { v4 as uuid } from "uuid";
@@ -10,7 +11,7 @@ import { StudentEntity } from "src/student/student.entity";
 import { ResgisterClassEntity } from "./registerClass.entity";
 import { ISuccessResponse } from "src/common/response/success.response";
 import { SubjectEntity } from "src/subject/subject.entity";
-import { SearchRegisterClassDTO } from "src/style/dto/search.dto";
+
 @Injectable()
 export class ResgisterSubjectClassService {
   constructor(private readonly em: EntityManager) {}
@@ -204,13 +205,21 @@ export class ResgisterSubjectClassService {
         ...(studentId ? { studentId } : {}),
         ...(subjectClassId ? { subjectClassId } : {}),
       };
-      const data = await this.em.find(ResgisterClassEntity, conditionSearch, {
-        populate: ["studentId", "subjectClassId"],
-        limit: pageSize,
-        offset: (page - 1) * pageSize,
-      });
+      const data = await this.em.findAndCount(
+        ResgisterClassEntity,
+        conditionSearch,
+        {
+          populate: [
+            "studentId",
+            "subjectClassId.teacherId",
+            "subjectClassId.subjectId",
+          ],
+          limit: pageSize,
+          offset: (page - 1) * pageSize,
+        }
+      );
 
-      return { status: "Find Successfully", data };
+      return data;
     } catch (error) {
       throw new HttpException("Find Fail", HttpStatus.BAD_REQUEST);
     }
@@ -231,7 +240,6 @@ export class ResgisterSubjectClassService {
     }
     await this.conditionRegister(updateRegisterClass);
     wrap(registerClassRecord).assign(updateRegisterClass);
-    console.log(updateRegisterClass);
     await this.em.persistAndFlush(registerClassRecord);
     return { status: "Update Success Fully", data: updateRegisterClass };
   }
