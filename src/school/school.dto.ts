@@ -8,7 +8,7 @@ import {
 } from "class-validator";
 
 export class CreateSchoolDTO {
-  @Expose({ toPlainOnly: true })
+  @Expose()
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
