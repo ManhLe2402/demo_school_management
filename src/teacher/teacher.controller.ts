@@ -55,10 +55,10 @@ export class TeacherController {
     @Param("id") id: UuidType
   ): Promise<ISuccessResponse<GetTeacherDTO>> {
     const teacherRecord = await this.teacherService.findOne(id);
-    console.log(teacherRecord);
     const data = plainToClass(GetTeacherDTO, teacherRecord, {
       excludeExtraneousValues: true,
     });
+
     return { status: "Get Detail Successfuly", data };
   }
   @Put()

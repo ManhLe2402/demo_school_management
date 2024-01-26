@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   ManyToOne,
@@ -32,10 +33,10 @@ export class SubjectClassEntity extends EntityCommon {
 
   @Property({ default: "active" })
   classStatus!: string;
-  @ManyToOne(() => TeacherEntity)
+  @ManyToOne(() => TeacherEntity, { cascade: [Cascade.REMOVE] })
   teacherId!: string;
 
-  @ManyToOne(() => SubjectEntity)
+  @ManyToOne(() => SubjectEntity, { cascade: [Cascade.REMOVE] })
   subjectId: string;
 
   @OneToMany(

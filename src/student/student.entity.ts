@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   ManyToOne,
@@ -18,12 +19,13 @@ export class StudentEntity extends PersonEntiy {
   @Property({ default: "active" })
   enrollmentStatus!: string;
 
-  @ManyToOne(() => SchoolEntity)
+  @ManyToOne(() => SchoolEntity, { cascade: [Cascade.REMOVE] })
   schoolId!: string;
 
   @OneToMany(
     () => ResgisterClassEntity,
-    (registerClass) => registerClass.studentId
+    (registerClass) => registerClass.studentId,
+    { cascade: [Cascade.REMOVE] }
   )
   registerSubjectClass = new Collection<ResgisterClassEntity>(this);
 }

@@ -52,6 +52,12 @@ export class UpdateTeacherDTO extends CreateTeacherDTO {
 }
 
 export class SearchTeacherDTO extends CommonSearchDTO {
+  @IsOptional()
   @Expose()
   fullName: string;
+
+  @IsOptional()
+  @Expose()
+  @IsUUID()
+  schoolId: string;
 }
