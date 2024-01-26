@@ -73,7 +73,7 @@ export class TeacherController {
     const data = await this.teacherService.delete(id);
     return {
       status: "Delete Successfully",
-      data: `Deleted the Teacher Id= ${data.id}`,
+      data: `Deleted the Teacher Id= ${id}`,
     };
   }
 }
