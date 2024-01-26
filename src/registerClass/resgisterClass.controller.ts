@@ -34,9 +34,7 @@ export class RegisterClassController {
     return await this.registerClassService.create(registerClassForm);
   }
   @Get()
-  async find(
-    @Query() formSearch: SearchRegisterClassDTO
-  ): Promise<
+  async find(@Query() formSearch: SearchRegisterClassDTO): Promise<
     ISuccessResponse<{
       count: number;
       registerClassList: GetRegisterClassDTO[];
@@ -65,7 +63,7 @@ export class RegisterClassController {
     return await this.registerClassService.update(updateRegisterClass);
   }
   @Delete("id")
-  async delete(@Param() id: UuidType): Promise<ISuccessResponse<string>> {
+  async delete(@Param("id") id: UuidType): Promise<ISuccessResponse<string>> {
     return this.registerClassService.delete(id);
   }
 }

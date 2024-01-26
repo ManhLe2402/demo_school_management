@@ -94,7 +94,7 @@ export class SubjectClassController {
     return { status: "Update success", data };
   }
   @Delete(":id")
-  async delete(@Param() id: UuidType): Promise<ISuccessResponse<string>> {
+  async delete(@Param("id") id: UuidType): Promise<ISuccessResponse<string>> {
     try {
       const data = await this.subjectClassService.delete(id);
       return { status: "Delete Success", data };
