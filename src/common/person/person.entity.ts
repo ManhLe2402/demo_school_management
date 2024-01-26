@@ -14,7 +14,7 @@ export class PersonEntiy extends EntityCommon {
   @Property()
   gender!: string;
 
-  @Property({ type: "timestamptz" })
+  @Property({ type: "timestamp" })
   dateOfBirth!: Date;
 
   @Property()

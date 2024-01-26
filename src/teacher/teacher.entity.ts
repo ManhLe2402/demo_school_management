@@ -7,6 +7,7 @@ import {
   Property,
 } from "@mikro-orm/core";
 import { PersonEntiy } from "src/common/person/person.entity";
+
 import { SchoolEntity } from "src/school/school.entity";
 import { SubjectClassEntity } from "src/subjectClass/subjectClass.entity";
 
@@ -18,11 +19,11 @@ export class TeacherEntity extends PersonEntiy {
   @Property({ type: "text", default: "active" })
   teachingStatus!: string;
 
-  @ManyToOne(() => SchoolEntity)
+  @ManyToOne(() => SchoolEntity, { cascade: [Cascade.REMOVE] })
   schoolId!: string;
 
-  @OneToMany(() => SubjectClassEntity, (subject) => subject.teacherId, {
-    cascade: [Cascade.REMOVE, Cascade.ALL],
-  })
+  @OneToMany(() => SubjectClassEntity, (subject) => subject.teacherId)
   subjectClass = new Collection<SubjectClassEntity>(this);
+
+  //Phải poplulate mới xóa được
 }

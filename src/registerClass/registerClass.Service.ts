@@ -25,22 +25,8 @@ export class ResgisterSubjectClassService {
       },
       { populate: ["subjectId"] }
     );
-
-    const inforStudent = await this.em.findOne(StudentEntity, {
-      id: resgiterClassForm.studentId,
-    });
-    const registerList = await this.em.find(
-      ResgisterClassEntity,
-      {
-        subjectClassId: resgiterClassForm.subjectClassId,
-      },
-      { disableIdentityMap: true }
-    );
     if (!inforSubjectClass) {
       throw new HttpException("Subject Class Not Found", HttpStatus.NOT_FOUND);
-    }
-    if (!inforStudent) {
-      throw new HttpException("Student Not Found", HttpStatus.NOT_FOUND);
     }
     if (new Date(inforSubjectClass.startAt).getTime() < now) {
       throw new HttpException("Expired Registration", HttpStatus.BAD_REQUEST);
@@ -48,12 +34,26 @@ export class ResgisterSubjectClassService {
     if (inforSubjectClass.classStatus === "unactive") {
       throw new HttpException("Canceled Class ", HttpStatus.BAD_REQUEST);
     }
+    const inforStudent = await this.em.findOne(StudentEntity, {
+      id: resgiterClassForm.studentId,
+    });
     if (inforStudent.enrollmentStatus !== "active") {
       throw new HttpException(
         "Student Cannot RegisterClass",
         HttpStatus.BAD_REQUEST
       );
     }
+    if (!inforStudent) {
+      throw new HttpException("Student Not Found", HttpStatus.NOT_FOUND);
+    }
+    const registerList = await this.em.find(
+      ResgisterClassEntity,
+      {
+        subjectClassId: resgiterClassForm.subjectClassId,
+      },
+      { disableIdentityMap: true }
+    );
+
     if (registerList.length >= 200) {
       throw new HttpException("Class Fully", HttpStatus.BAD_REQUEST);
     }

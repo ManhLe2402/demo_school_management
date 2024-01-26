@@ -9,18 +9,26 @@ import { ISuccessResponse } from "src/common/response/success.response";
 import { v4 as uuid } from "uuid";
 import { StudentEntity } from "./student.entity";
 import { SearchTeacherDTO } from "src/teacher/teacher.dto";
+import { SchoolEntity } from "src/school/school.entity";
 @Injectable()
 export class StudentService {
   constructor(private readonly em: EntityManager) {}
-  async create(student: CreateStudentDTO): Promise<CreateStudentDTO> {
-    try {
-      const id = uuid();
-      const newStudent = this.em.create(StudentEntity, { id, ...student });
-      await this.em.persistAndFlush(newStudent);
-      return student;
-    } catch (error) {
-      throw new HttpException("Create Fail", HttpStatus.BAD_REQUEST);
+  checkDependency = async (
+    input: CreateStudentDTO | UpdateStudentDTO
+  ): Promise<void> => {
+    const checkSchoolExist = await this.em.findOne(SchoolEntity, {
+      id: input.schoolId,
+    });
+    if (!checkSchoolExist) {
+      throw new HttpException("School Not Exist", HttpStatus.NOT_FOUND);
     }
+  };
+  async create(student: CreateStudentDTO): Promise<CreateStudentDTO> {
+    const id = uuid();
+    await this.checkDependency(student);
+    const newStudent = this.em.create(StudentEntity, { id, ...student });
+    await this.em.persistAndFlush(newStudent);
+    return student;
   }
   async find(searchStudent: SearchStudentDTO) {
     const {
@@ -70,12 +78,14 @@ export class StudentService {
     if (!studentRecord) {
       throw new HttpException("Student Not Found", HttpStatus.NOT_FOUND);
     }
+    await this.checkDependency(updateStudent);
     wrap(studentRecord).assign(updateStudent);
     await this.em.persistAndFlush(studentRecord);
     return updateStudent;
   }
   async delete(id: uuid) {
     const studentRecord = await this.em.findOne(StudentEntity, id);
+
     if (!studentRecord) {
       throw new HttpException("Student Not Found", HttpStatus.NOT_FOUND);
     }

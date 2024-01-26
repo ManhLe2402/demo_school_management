@@ -13,14 +13,33 @@ import { ISuccessResponse } from "src/common/response/success.response";
 import { v4 as uuidv4 } from "uuid";
 import { EntityManager, wrap } from "@mikro-orm/core";
 import { SubjectClassEntity } from "./subjectClass.entity";
+import { TeacherEntity } from "src/teacher/teacher.entity";
+import { SubjectEntity } from "src/subject/subject.entity";
 
 @Injectable()
 export class SubjectClassService {
   constructor(private readonly em: EntityManager) {}
+  checkDependency = async (
+    input: CreateSubjectClassDTO | UpdateSubjectClassDTO
+  ): Promise<void> => {
+    const checkTeacherExist = await this.em.findOne(TeacherEntity, {
+      id: input.teacherId,
+    });
+    if (!checkTeacherExist) {
+      throw new HttpException("Teacher Not Exist", HttpStatus.NOT_FOUND);
+    }
+    const checkSubjectExist = await this.em.findOne(SubjectEntity, {
+      id: input.subjectId,
+    });
+    if (!checkSubjectExist) {
+      throw new HttpException("Subject Not Exist", HttpStatus.NOT_FOUND);
+    }
+  };
   async create(
     subjectClass: CreateSubjectClassDTO
   ): Promise<CreateSubjectClassDTO> {
     const id = uuidv4();
+    await this.checkDependency(subjectClass);
     const newSubjectClass = this.em.create(SubjectClassEntity, {
       id,
       ...subjectClass,
@@ -62,17 +81,17 @@ export class SubjectClassService {
   }
 
   async update(newSubjectClass: UpdateSubjectClassDTO) {
-    try {
-      const subjectClass = await this.em.findOneOrFail(
-        SubjectClassEntity,
-        newSubjectClass.id
-      );
-      wrap(subjectClass).assign(newSubjectClass);
-      await this.em.persistAndFlush(subjectClass);
-      return newSubjectClass;
-    } catch (error) {
-      throw new HttpException("Update Fail", HttpStatus.BAD_REQUEST);
+    const subjectClassRecord = await this.em.findOne(
+      SubjectClassEntity,
+      newSubjectClass.id
+    );
+    if (!subjectClassRecord) {
+      throw new HttpException("Subject Class Not Found", HttpStatus.NOT_FOUND);
     }
+    await this.checkDependency(newSubjectClass);
+    wrap(subjectClassRecord).assign(newSubjectClass);
+    await this.em.persistAndFlush(subjectClassRecord);
+    return newSubjectClass;
   }
   async delete(id: uuidv4) {
     try {

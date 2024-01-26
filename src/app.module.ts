@@ -17,7 +17,9 @@ import { RegisterClassModule } from "./registerClass/registerClass.module";
       useFactory: async () => {
         return {
           driver: PostgreSqlDriver,
-          clientUrl: "postgres://postgres:ManhTH2402@localhost:5432/postgres",
+          // clientUrl: "postgres://postgres:ManhTH2402@localhost:5432/postgres",
+          clientUrl:
+            "postgres://manhle:manhle123@mapstudy.edu.vn:5432/mapstudy_train",
           autoLoadEntities: true,
         };
       },
@@ -27,7 +29,7 @@ import { RegisterClassModule } from "./registerClass/registerClass.module";
     SubjectModule,
     SubjectClassModule,
     StudentModule,
-    RegisterClassModule
+    RegisterClassModule,
   ],
   controllers: [AppController],
   providers: [AppService],

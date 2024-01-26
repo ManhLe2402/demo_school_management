@@ -10,12 +10,26 @@ import { v4 as uuidv4 } from "uuid";
 import { TeacherEntity } from "./teacher.entity";
 import { ISuccessResponse } from "src/common/response/success.response";
 import { plainToClass } from "class-transformer";
+import { SchoolEntity } from "src/school/school.entity";
+import { SubjectEntity } from "src/subject/subject.entity";
+import { SubjectClassEntity } from "src/subjectClass/subjectClass.entity";
 
 @Injectable()
 export class TeacherService {
   constructor(private readonly em: EntityManager) {}
+  checkDependency = async (
+    input: CreateTeacherDTO | UpdateTeacherDTO
+  ): Promise<void> => {
+    const checkSchoolExist = await this.em.findOne(SchoolEntity, {
+      id: input.schoolId,
+    });
+    if (!checkSchoolExist) {
+      throw new HttpException("School Not Exist", HttpStatus.NOT_FOUND);
+    }
+  };
   async create(teacher: CreateTeacherDTO): Promise<CreateTeacherDTO> {
     const id = uuidv4();
+    await this.checkDependency(teacher);
     const newTeacher = this.em.create(TeacherEntity, { id, ...teacher });
     await this.em.persistAndFlush(newTeacher);
     return teacher;
@@ -29,11 +43,12 @@ export class TeacherService {
   }
 
   async find(searchTeacher: SearchTeacherDTO) {
-    const { id, fullName, page = 1, pageSize = 30 } = searchTeacher;
+    const { id, fullName, page = 1, pageSize = 30, schoolId } = searchTeacher;
     const teacherList = await this.em.findAndCount(
       TeacherEntity,
       {
         ...(id ? { id } : {}),
+        ...(schoolId ? { schoolId } : {}),
         ...(fullName
           ? {
               $or: [
@@ -56,6 +71,7 @@ export class TeacherService {
     if (!recordTeacher) {
       throw new HttpException("Teacher Not Found", HttpStatus.NOT_FOUND);
     }
+    await this.checkDependency(newTeacher);
     wrap(recordTeacher).assign(newTeacher);
     await this.em.persistAndFlush(recordTeacher);
     return { status: "Update Successfully", data: newTeacher };
@@ -65,6 +81,7 @@ export class TeacherService {
     if (!teacherRecord) {
       throw new HttpException("Teacher Not Found", HttpStatus.NOT_FOUND);
     }
+    // await this.em.nativeDelete(SubjectClassEntity, { teacherId: id });
     await this.em.removeAndFlush(teacherRecord);
     return teacherRecord;
   }
