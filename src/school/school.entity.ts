@@ -42,13 +42,5 @@ export class SchoolEntity extends EntityCommon {
 
   @Property({ type: "text" })
   description: string = "";
-  @OneToMany(() => TeacherEntity, (teacher) => teacher.schoolId, {
-    cascade: [Cascade.REMOVE],
-  })
-  teachers = new Collection<TeacherEntity>(this);
 
-  @OneToMany(() => StudentEntity, (student) => student.schoolId, {
-    cascade: [Cascade.REMOVE],
-  })
-  students = new Collection<StudentEntity>(this);
 }

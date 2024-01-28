@@ -21,11 +21,4 @@ export class StudentEntity extends PersonEntiy {
 
   @ManyToOne(() => SchoolEntity, { cascade: [Cascade.REMOVE] })
   schoolId!: string;
-
-  @OneToMany(
-    () => ResgisterClassEntity,
-    (registerClass) => registerClass.studentId,
-    { cascade: [Cascade.REMOVE] }
-  )
-  registerSubjectClass = new Collection<ResgisterClassEntity>(this);
 }

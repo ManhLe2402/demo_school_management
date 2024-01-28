@@ -22,8 +22,5 @@ export class TeacherEntity extends PersonEntiy {
   @ManyToOne(() => SchoolEntity, { cascade: [Cascade.REMOVE] })
   schoolId!: string;
 
-  @OneToMany(() => SubjectClassEntity, (subject) => subject.teacherId)
-  subjectClass = new Collection<SubjectClassEntity>(this);
-
   //Phải poplulate mới xóa được
 }

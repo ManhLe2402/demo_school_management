@@ -81,7 +81,6 @@ export class TeacherService {
     if (!teacherRecord) {
       throw new HttpException("Teacher Not Found", HttpStatus.NOT_FOUND);
     }
-    // await this.em.nativeDelete(SubjectClassEntity, { teacherId: id });
     await this.em.removeAndFlush(teacherRecord);
     return teacherRecord;
   }

@@ -38,10 +38,4 @@ export class SubjectClassEntity extends EntityCommon {
 
   @ManyToOne(() => SubjectEntity, { cascade: [Cascade.REMOVE] })
   subjectId: string;
-
-  @OneToMany(
-    () => ResgisterClassEntity,
-    (registerSubjectClass) => registerSubjectClass.subjectClassId
-  )
-  subjectClass = new Collection<ResgisterClassEntity>(this);
 }
