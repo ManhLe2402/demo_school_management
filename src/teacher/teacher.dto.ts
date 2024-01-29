@@ -34,7 +34,7 @@ export class CreateTeacherDTO extends CreatePersonDTO {
 }
 
 export class GetTeacherDTO extends CreateTeacherDTO {
-  @Expose()
+  // @Expose()
   id: string;
 
   @Exclude()
