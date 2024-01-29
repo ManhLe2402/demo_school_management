@@ -70,7 +70,7 @@ export class TeacherController {
 
   @Delete(":id")
   async delelte(@Param("id") id: UuidType): Promise<ISuccessResponse<string>> {
-    const data = await this.teacherService.delete(id);
+    await this.teacherService.delete(id);
     return {
       status: "Delete Successfully",
       data: `Deleted the Teacher Id= ${id}`,

@@ -77,7 +77,7 @@ export class SchoolController {
   @Delete(":id")
   async delete(@Param("id") id: UuidType): Promise<ISuccessResponse<string>> {
     // return await this.schoolService.delete(id);
-    const deletedSchool = await this.schoolService.delete(id);
+    await this.schoolService.delete(id);
     return {
       status: "Delete Successfully",
       data: `Delete the school ID= ${id}`,
