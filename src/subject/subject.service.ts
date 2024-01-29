@@ -62,7 +62,7 @@ export class SubjectService {
     if (!subjectRecord) {
       throw new HttpException("Subject Not Found", HttpStatus.NOT_FOUND);
     }
-    await this.em.persistAndFlush(subjectRecord);
+    await this.em.removeAndFlush(subjectRecord);
     return subjectRecord;
   }
 }
