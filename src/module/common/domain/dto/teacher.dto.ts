@@ -9,8 +9,8 @@ import {
   Length,
   isNotEmpty,
 } from "class-validator";
-import { CommonSearchDTO } from "src/common/common.dto";
-import { CreatePersonDTO } from "src/common/person/person.dto";
+import { CreatePersonDTO } from "./common/person.dto";
+import { SearchCommonDTO } from "./common/search.dto";
 
 export class CreateTeacherDTO extends CreatePersonDTO {
   @IsNumber()
@@ -51,7 +51,7 @@ export class UpdateTeacherDTO extends CreateTeacherDTO {
   unknowProperty: never;
 }
 
-export class SearchTeacherDTO extends CommonSearchDTO {
+export class SearchTeacherDTO extends SearchCommonDTO {
   @IsOptional()
   @Expose()
   fullName: string;
