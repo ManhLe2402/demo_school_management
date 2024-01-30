@@ -8,21 +8,21 @@ import {
   Put,
   Query,
 } from "@nestjs/common";
-import { SubjectService } from "./subject.service";
-import {
-  CreateSubjectDTO,
-  GetSubjectDTO,
-  SearchSubjectDTO,
-  UpdateSubjectDTO,
-} from "./subject.dto";
-import { ISuccessResponse } from "src/common/response/success.response";
+// import { SubjectService } from "./subject.service";
+// import {
+//   CreateSubjectDTO,
+//   GetSubjectDTO,
+//   SearchSubjectDTO,
+//   UpdateSubjectDTO,
+// } from "./subject.dto";
+// import { ISuccessResponse } from "src/common/response/success.response";
 
 import { plainToClass } from "class-transformer";
 import { UuidType } from "@mikro-orm/core";
 
 @Controller("subject")
 export class SubjectController {
-  constructor(private readonly subjectService: SubjectService) {}
+  /*  constructor(private readonly subjectService: SubjectService) {}
   @Post()
   async create(
     @Body() subject: CreateSubjectDTO
@@ -76,5 +76,5 @@ export class SubjectController {
       status: "Delete Subject Successfully",
       data: `Deleted the subject ID = ${id}`,
     };
-  }
+  } */
 }

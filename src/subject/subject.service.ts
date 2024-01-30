@@ -1,18 +1,18 @@
-import { EntityManager, wrap } from "@mikro-orm/core";
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import {
-  CreateSubjectDTO,
-  GetSubjectDTO,
-  SearchSubjectDTO,
-  UpdateSubjectDTO,
-} from "./subject.dto";
-import { SubjectEntity } from "./subject.entity";
-import { v4 as uuid } from "uuid";
+// import { EntityManager, wrap } from "@mikro-orm/core";
+// import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+// import {
+//   CreateSubjectDTO,
+//   GetSubjectDTO,
+//   SearchSubjectDTO,
+//   UpdateSubjectDTO,
+// } from "./subject.dto";
+// import { SubjectEntity } from "./subject.entity";
+// import { v4 as uuid } from "uuid";
 
-@Injectable()
-export class SubjectService {
-  constructor(private readonly em: EntityManager) {}
-  async create(subject: CreateSubjectDTO): Promise<CreateSubjectDTO> {
+// @Injectable()
+export class SubjectServiceOld {
+  // constructor(private readonly em: EntityManager) {}
+  /* async create(subject: CreateSubjectDTO): Promise<CreateSubjectDTO> {
     const id = uuid();
     const newSubject = this.em.create(SubjectEntity, { id, ...subject });
     await this.em.persistAndFlush(newSubject);
@@ -132,5 +132,5 @@ export class SubjectService {
     }
     await this.em.persistAndFlush(subjectRecord);
     return subjectRecord;
-  }
+  } */
 }
