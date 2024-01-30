@@ -4,13 +4,12 @@ import { AppService } from "./app.service";
 
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { SchoolModule } from "../school/school.module";
-import { TeacherModule } from "../teacher/teacher.module";
-import { SubjectModule } from "../subject/subject.module";
-import { SubjectClassModule } from "../subjectClass/subjectClass.module";
-import { StudentModule } from "../student/student.module";
-import { RegisterClassModule } from "../registerClass/registerClass.module";
+import { CommonModule } from "../module/common/common.module";
 import { config } from "src/module/_core/infras/env/default.env";
+import { AppExceptionModule } from "src/module/_core/module/AppExceptionFilter.module";
+import { AllExceptionsFilter } from "src/module/_core/middleware/filter/allException";
+import { HttpExceptionFilter } from "src/module/_core/middleware/filter/httpException";
+import { PostgresExceptionFilter } from "src/module/_core/middleware/filter/postgresException";
 
 @Module({
   imports: [
@@ -21,18 +20,17 @@ import { config } from "src/module/_core/infras/env/default.env";
         return {
           driver: PostgreSqlDriver,
           // clientUrl: "postgres://postgres:ManhTH2402@localhost:5432/postgres",
-          clientUrl: `${type}://${username}:${password}@${host}:${port}/${database}`,
-          // "postgres://manhle:manhle123@mapstudy.edu.vn:5432/mapstudy_train",
+          clientUrl: `postgres://${username}:${password}@${host}:${port}/${database}`,
           autoLoadEntities: true,
         };
       },
     }),
-    SchoolModule,
-    TeacherModule,
-    SubjectModule,
-    SubjectClassModule,
-    StudentModule,
-    RegisterClassModule,
+    CommonModule,
+    AppExceptionModule.forRoot([
+      AllExceptionsFilter,
+      HttpExceptionFilter,
+      PostgresExceptionFilter,
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

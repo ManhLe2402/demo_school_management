@@ -1,11 +1,13 @@
-import { Exclude, Expose, Transform, Type } from "class-transformer";
+import { Type } from "class-transformer";
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
-import { CommonSearchDTO } from "src/common/common.dto";
-import { GetStudentDTO } from "src/student/student.dto";
-import { GetSubjectClassDTO } from "src/subjectClass/subjectClass.dto";
+
 import { SearchCommonDTO } from "./common/search.dto";
+import { v4 as uuidv4 } from "uuid";
+import { GetStudentDTO } from "./student.dto";
+import { GetSubjectClassDTO } from "./subjecClass.dto";
 
 export class CreateRegisterClassDTO {
+  id: string;
   @IsNotEmpty()
   @IsUUID()
   studentId: string;
