@@ -35,6 +35,6 @@ export class Student extends Person {
   @ManyToOne(() => School, { cascade: [Cascade.REMOVE], ref: true })
   school: Ref<School>;
 
-  @Property({ type: "uuid" })
+  @Property({ type: "uuid", persist: false })
   schoolId!: string;
 }

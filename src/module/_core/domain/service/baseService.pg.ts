@@ -23,6 +23,14 @@ export class BaseService<
     return this.repository.find(filter, queryOption);
   }
 
+  async findAndCount(
+    filter: FilterQuery<Entity>,
+    queryOption?: QueryOption<Entity>
+  ) {
+    const result = await this.repository.findAndCount(filter, queryOption);
+
+    return { count: result[1], data: result[0] };
+  }
   async findOne(
     filter: FilterQuery<Entity>,
     queryOption?: QueryOption<Entity>

@@ -1,4 +1,12 @@
-import { Cascade, Entity, ManyToOne, Property, Ref } from "@mikro-orm/core";
+import {
+  Cascade,
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property,
+  Ref,
+  Unique,
+} from "@mikro-orm/core";
 import { config } from "src/module/_core/infras/env/default.env";
 import { Teacher } from "./teacher";
 import { Subject } from "./subject";
@@ -6,6 +14,10 @@ import { Subject } from "./subject";
 const { schema } = config.postgresDb;
 @Entity({ schema })
 export class SubjectClass {
+  @PrimaryKey({ type: "uuid" })
+  @Unique()
+  id!: string;
+
   @Property()
   maxQuantity!: number;
 
@@ -39,12 +51,12 @@ export class SubjectClass {
   @ManyToOne(() => Teacher, { cascade: [Cascade.REMOVE], ref: true })
   teacher: Ref<Teacher>;
 
-  @Property({ type: "uuid" })
+  @Property({ type: "uuid" ,persist:false})
   teacherId!: string;
 
   @ManyToOne(() => Subject, { cascade: [Cascade.REMOVE], ref: true })
   subject: Ref<Subject>;
 
-  @Property({ type: "uuid" })
+  @Property({ type: "uuid",persist:false })
   subjectId!: string;
 }
