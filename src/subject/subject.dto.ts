@@ -8,7 +8,7 @@ import {
 } from "class-validator";
 import { CommonSearchDTO } from "src/common/common.dto";
 
-export class CreateSubjectDTO {
+export class CreateSubjectDTOOld {
   @Expose()
   @IsNotEmpty()
   @IsString()
@@ -29,11 +29,11 @@ export class CreateSubjectDTO {
   subjectStatus: string;
 }
 
-export class GetSubjectDTO extends CreateSubjectDTO {
+export class GetSubjectDTO extends CreateSubjectDTOOld {
   @Expose()
   id: string;
 }
-export class UpdateSubjectDTO extends CreateSubjectDTO {
+export class UpdateSubjectDTO extends CreateSubjectDTOOld {
   @Expose()
   @IsNotEmpty()
   @IsUUID()
