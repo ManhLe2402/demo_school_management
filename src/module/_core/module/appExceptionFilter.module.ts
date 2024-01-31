@@ -1,30 +1,32 @@
 import { DynamicModule, ExceptionFilter, Module } from "@nestjs/common";
-import { AllExceptionsFilter } from "../middleware/filter/allException";
 import { APP_FILTER } from "@nestjs/core";
+import { AllExceptionsFilter } from "../app/middleware/filter/allException";
 
 @Module({})
 export class AppExceptionModule {
-  static exceptionFilter: Array<new () => ExceptionFilter> = [
+  static exceptionFilters: Array<new () => ExceptionFilter> = [
     AllExceptionsFilter,
   ];
+
   static forRoot(
-    exceptionFilter: Array<new () => ExceptionFilter>
+    exceptionFilters: Array<new () => ExceptionFilter>
   ): DynamicModule {
-    this.exceptionFilter = exceptionFilter;
+    this.exceptionFilters = exceptionFilters;
     return {
       module: AppExceptionModule,
-      providers: this.exceptionFilter.map((exceptionFilter) => ({
+      providers: this.exceptionFilters.map((exceptionFilter) => ({
         provide: APP_FILTER,
         useClass: exceptionFilter,
       })),
     };
   }
+
   static forFeature(
-    exceptionFilter: Array<new () => ExceptionFilter>
+    exceptionFilters: Array<new () => ExceptionFilter>
   ): DynamicModule {
     return {
       module: AppExceptionModule,
-      providers: exceptionFilter.map((exceptionFilter) => ({
+      providers: exceptionFilters.map((exceptionFilter) => ({
         provide: APP_FILTER,
         useClass: exceptionFilter,
       })),

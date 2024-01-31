@@ -1,8 +1,8 @@
 export interface Sort {
-  [x: string]: OrderQuery;
+    [x: string]: OrderQuery;
 }
 
 export enum OrderQuery {
-  ASC = "asc",
-  DESC = "desc",
+    ASC = "asc",
+    DESC = "desc"
 }

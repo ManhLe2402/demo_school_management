@@ -4,12 +4,13 @@ import { AppService } from "./app.service";
 
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { CommonModule } from "../module/common/common.module";
+
 import { config } from "src/module/_core/infras/env/default.env";
-import { AppExceptionModule } from "src/module/_core/module/AppExceptionFilter.module";
-import { AllExceptionsFilter } from "src/module/_core/middleware/filter/allException";
-import { HttpExceptionFilter } from "src/module/_core/middleware/filter/httpException";
-import { PostgresExceptionFilter } from "src/module/_core/middleware/filter/postgresException";
+import { CommonModule } from "src/school_management_module/common/common.module";
+import { AppExceptionModule } from "src/module/_core/module/appExceptionFilter.module";
+import { AllExceptionsFilter } from "src/module/_core/app/middleware/filter/allException";
+import { HttpExceptionFilter } from "src/module/_core/app/middleware/filter/httpException";
+import { PostgresExceptionFilter } from "src/module/_core/app/middleware/filter/postgresExeption";
 
 @Module({
   imports: [
