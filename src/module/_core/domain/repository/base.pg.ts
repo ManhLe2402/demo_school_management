@@ -44,7 +44,7 @@ export class BaseRepository<
     const options: FindOptions<Entity> = {};
 
     const qO = cleanObject(queryOptions);
-
+    if (qO.populate) options.populate = qO.populate as any;
     if (qO.sort) options.orderBy = qO.sort as any;
     if (qO.page) options.offset = (qO.page - 1) * qO.pageSize;
     if (qO.pageSize) options.limit = qO.pageSize;
@@ -86,7 +86,12 @@ export class BaseRepository<
   ) {
     return this.raw.find(filterQuery, this.getQueryOption(queryOption));
   }
-
+  async findAndCount(
+    filterQuery: FilterQuery<Entity>,
+    queryOption?: QueryOption<Entity>
+  ) {
+    return this.raw.findAndCount(filterQuery, this.getQueryOption(queryOption));
+  }
   async findOne(
     filterQuery: FilterQuery<Entity>,
     queryOption?: QueryOption<Entity>

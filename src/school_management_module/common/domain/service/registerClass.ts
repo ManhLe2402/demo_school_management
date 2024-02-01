@@ -6,16 +6,18 @@ import {
 import { RegisterClass } from "../model/registerClass";
 import {
   CreateRegisterClassDTO,
+  SearchRegisterClassDTO,
   UpdateRegisterClassDTO,
 } from "../dto/registerClass.dto";
 import { RegisterClassRepository } from "../repository/registerClass";
 import { GetSubjectClassDTO } from "../dto/subjecClass.dto";
-import { EntityManager } from "@mikro-orm/postgresql";
+import { EntityManager, FilterQuery, Loaded } from "@mikro-orm/postgresql";
 import { Student } from "../model/student";
 import { SubjectClass } from "../model/subjectClass";
 import { Subject } from "../model/subject";
 import { v4 as uuidv4 } from "uuid";
 import { ClientExeption } from "src/module/_core/infras/exception/clientException";
+import { QueryOption } from "src/module/_core/infras/type/queryOption.pg";
 
 @Injectable()
 export class RegisterClassService extends BaseService<
@@ -113,4 +115,10 @@ export class RegisterClassService extends BaseService<
     await this.conditionRegister(updateData);
     return super.update({ id: updateData.id }, updateData);
   }
+
+  // async findAndCount(searchRegister:SearchRegisterClassDTO, queryOption?: QueryOption<RegisterClass>): Promise<[Loaded<RegisterClass, never, "*", never>[], number]> {
+  //   const {}=
+
+  //   return
+  // }
 }

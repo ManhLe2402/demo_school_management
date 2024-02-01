@@ -27,14 +27,15 @@ export class SchoolController {
   @Get()
   async findAll(@Query() querySearch: SearchSchoolDTO) {
     const { page, pageSize, schoolName } = querySearch;
-    console.log("schoolNameschoolNameschoolName", querySearch);
-    return this.schoolService.find(
+
+    const data = await this.schoolService.findAndCount(
       schoolName ? { schoolName: { $like: `%${schoolName}%` } } : {},
       {
         page,
         pageSize,
       }
     );
+    return { count: data[1], data: data[0] };
   }
 
   @Get(":id")

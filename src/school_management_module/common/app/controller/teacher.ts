@@ -28,19 +28,8 @@ export class TeacherController {
 
   @Get()
   async findAll(@Query() searchTeacherDTO: SearchTeacherDTO) {
-    const { fullName, schoolId, page, pageSize } = searchTeacherDTO;
-    const conditionSearch: FilterQuery<Teacher> = {
-      ...(fullName
-        ? {
-            $or: [
-              { firstName: { $like: `%${fullName}%` } },
-              { lastName: { $like: `%${fullName}%` } },
-            ],
-          }
-        : {}),
-      ...(schoolId ? { schoolId } : {}),
-    };
-    return this.teacherService.find(searchTeacherDTO);
+    const data = await this.teacherService.findAndCount(searchTeacherDTO);
+    return { count: data[1], data: data[0] };
   }
 
   @Get(":id")

@@ -29,7 +29,10 @@ export class SubjectClassController {
 
   @Get()
   async findAll(@Query() SearchSubjectClassDTO: SearchSubjectClassDTO) {
-    return this.subjectClassService.find(SearchSubjectClassDTO);
+    const data = await this.subjectClassService.findAndCount(
+      SearchSubjectClassDTO
+    );
+    return { count: data[1], data: data[0] };
   }
 
   @Get(":id")

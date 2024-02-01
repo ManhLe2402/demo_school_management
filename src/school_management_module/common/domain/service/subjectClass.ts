@@ -69,13 +69,33 @@ export class SubjectClassService extends BaseService<
       ...(teacherId ? { teacherId } : {}),
       ...(academicYear ? { academicYear } : {}),
     };
-
     return this.em.find(SubjectClass, conditionSearch, {
       limit: pageSize,
       offset: (page - 1) * pageSize,
       populate: ["subject", "teacher"],
     });
   }
+
+  async findAndCount(
+    searchSubjectClass: SearchSubjectClassDTO,
+    queryOption?: QueryOption<SubjectClass>
+  ): Promise<[Loaded<SubjectClass, never, "*", never>[], number]> {
+    const { teacherId, subjectId, page, pageSize, academicYear } =
+      searchSubjectClass;
+    queryOption = {
+      ...queryOption,
+      page,
+      pageSize,
+      populate: ["subject", "teacher"],
+    };
+    const conditionSearch: FilterQuery<SubjectClass> = {
+      ...(subjectId ? { subjectId } : {}),
+      ...(teacherId ? { teacherId } : {}),
+      ...(academicYear ? { academicYear } : {}),
+    };
+    return super.findAndCount(conditionSearch, queryOption);
+  }
+
   async findOne(
     filter: FilterQuery<SubjectClass>,
     queryOption?: QueryOption<SubjectClass>

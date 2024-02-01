@@ -62,7 +62,26 @@ export class TeacherService extends BaseService<
       populate: ["school"],
     });
   }
+  async findAndCount(
+    searchTeacherDTO: SearchTeacherDTO,
+    queryOption: QueryOption<Teacher> = {}
+  ): Promise<[Loaded<Teacher, never, "*", never>[], number]> {
+    const { fullName, schoolId, page, pageSize } = searchTeacherDTO;
+    queryOption = { ...queryOption, page, pageSize, populate: ["school"] };
+    const conditionSearch: FilterQuery<Teacher> = {
+      ...(fullName
+        ? {
+            $or: [
+              { firstName: { $like: `%${fullName}%` } },
+              { lastName: { $like: `%${fullName}%` } },
+            ],
+          }
+        : {}),
+      ...(schoolId ? { schoolId } : {}),
+    };
 
+    return super.findAndCount(conditionSearch, queryOption);
+  }
   async find(
     searchTeacherDTO: SearchTeacherDTO,
     queryOption?: QueryOption<Teacher>

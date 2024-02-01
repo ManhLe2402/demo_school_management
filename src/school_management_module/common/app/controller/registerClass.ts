@@ -6,11 +6,13 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from "@nestjs/common";
 import { RegisterClassService } from "../../domain/service/registerClass";
 
 import {
   CreateRegisterClassDTO,
+  SearchRegisterClassDTO,
   UpdateRegisterClassDTO,
 } from "../../domain/dto/registerClass.dto";
 
@@ -24,8 +26,8 @@ export class RegisterClassController {
   }
 
   @Get()
-  async findAll() {
-    return this.registerClassService.find({});
+  async findAll(@Query() searchRegister: SearchRegisterClassDTO) {
+    return this.registerClassService.find(searchRegister);
   }
 
   @Get(":id")

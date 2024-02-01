@@ -27,7 +27,8 @@ export class SubjectController {
 
   @Get()
   async findAll(@Query() searchSubject: SearchSubjectDTO) {
-    return this.subjectService.find(searchSubject);
+    const data = await this.subjectService.findAndCount(searchSubject);
+    return { count: data[1], data: data[0] };
   }
 
   @Get(":id")

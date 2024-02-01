@@ -26,7 +26,8 @@ export class StudentController {
 
   @Get()
   async findAll(@Query() searchStudent: SearchStudentDTO) {
-    return this.studentService.find(searchStudent);
+    const data = await this.studentService.findAndCount(searchStudent);
+    return { count: data[1], data: data[0] };
   }
 
   @Get(":id")

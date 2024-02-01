@@ -86,4 +86,27 @@ export class StudentService extends BaseService<
       populate: ["school"],
     });
   }
+  async findAndCount(
+    searchStudent: SearchStudentDTO,
+    queryOption: QueryOption<Student> = {}
+  ): Promise<[Loaded<Student, never, "*", never>[], number]> {
+    const { fullName, schoolId, page, pageSize, enrollmentStatus, level } =
+      searchStudent;
+    queryOption = { ...queryOption, page, pageSize, populate: ["school"] };
+    const conditionSearch: FilterQuery<Student> = {
+      ...(fullName
+        ? {
+            $or: [
+              { firstName: { $like: `%${fullName}%` } },
+              { lastName: { $like: `%${fullName}%` } },
+            ],
+          }
+        : {}),
+      ...(schoolId ? { schoolId } : {}),
+      ...(level ? { level } : {}),
+      ...(enrollmentStatus ? { enrollmentStatus } : {}),
+    };
+
+    return super.findAndCount(conditionSearch, queryOption);
+  }
 }

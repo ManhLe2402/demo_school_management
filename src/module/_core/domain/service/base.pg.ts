@@ -30,6 +30,12 @@ export class BaseService<
     return this.repository.findOne(filter, queryOption);
   }
 
+  async findAndCount(
+    filter: FilterQuery<Entity>,
+    queryOption?: QueryOption<Entity>
+  ) {
+    return this.repository.findAndCount(filter, queryOption);
+  }
   build(createDataDTO: CreateDataDTO): Entity {
     return this.repository.build(createDataDTO);
   }

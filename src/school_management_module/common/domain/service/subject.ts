@@ -36,4 +36,15 @@ export class SubjectService extends BaseService<
       offset: (page - 1) * pageSize,
     });
   }
+
+  async findAndCount(
+    searchSubject: SearchSubjectDTO,
+    queryOption?: QueryOption<Subject>
+  ): Promise<[Loaded<Subject, never, "*", never>[], number]> {
+    const { page, pageSize, subjectName } = searchSubject;
+    const conditionSearch: FilterQuery<Subject> = {
+      ...(subjectName ? { subjectName } : {}),
+    };
+    return super.findAndCount(conditionSearch, searchSubject);
+  }
 }
