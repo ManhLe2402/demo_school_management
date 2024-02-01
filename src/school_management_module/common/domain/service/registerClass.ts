@@ -15,6 +15,7 @@ import { Student } from "../model/student";
 import { SubjectClass } from "../model/subjectClass";
 import { Subject } from "../model/subject";
 import { v4 as uuidv4 } from "uuid";
+import { ClientExeption } from "src/module/_core/infras/exception/clientException";
 
 @Injectable()
 export class RegisterClassService extends BaseService<
@@ -29,7 +30,9 @@ export class RegisterClassService extends BaseService<
     super(registerClassRepository);
   }
 
-  async conditionRegister(resgiterClassForm: CreateRegisterClassDTO) {
+  async conditionRegister(
+    resgiterClassForm: CreateRegisterClassDTO | UpdateRegisterClassDTO
+  ) {
     const now = new Date().getTime();
 
     const inforSubjectClass = await this.em.findOne(
@@ -41,25 +44,26 @@ export class RegisterClassService extends BaseService<
     );
 
     if (!inforSubjectClass) {
-      throw new HttpException("Subject Class Not Found", HttpStatus.NOT_FOUND);
+      throw new ClientExeption("Lớp học không tồn tại!");
     }
     if (new Date(inforSubjectClass.startAt).getTime() < now) {
-      throw new HttpException("Expired Registration", HttpStatus.BAD_REQUEST);
+      throw new ClientExeption("Hết hạn đăng ký!");
     }
-    if (inforSubjectClass.classStatus === "unactive") {
-      throw new HttpException("Canceled Class ", HttpStatus.BAD_REQUEST);
+    if (inforSubjectClass.classStatus === "inactive") {
+      throw new ClientExeption("Lớp đã bị hủy!");
     }
     const inforStudent = await this.em.findOne(Student, {
       id: resgiterClassForm.studentId,
     });
     if (inforStudent.enrollmentStatus !== "active") {
-      throw new HttpException(
-        "Student Cannot RegisterClass",
-        HttpStatus.BAD_REQUEST
+      throw new ClientExeption(
+        `${inforStudent.level < 12 ? "Học sinh" : "Sinh viên"} không thể đăng ký lớp!`
       );
     }
     if (!inforStudent) {
-      throw new HttpException("Student Not Found", HttpStatus.NOT_FOUND);
+      throw new ClientExeption(
+        `${inforStudent.level < 12 ? "Học sinh" : "Sinh viên"} không tồn tại!`
+      );
     }
     const registerList = await this.em.find(
       RegisterClass,
@@ -70,8 +74,9 @@ export class RegisterClassService extends BaseService<
     );
 
     if (registerList.length >= 200) {
-      throw new HttpException("Class Fully", HttpStatus.BAD_REQUEST);
+      throw new ClientExeption("Lớp đầy!");
     }
+
     const checkLevel = () => {
       if (
         typeof inforSubjectClass.subjectId === "object" &&
@@ -86,25 +91,16 @@ export class RegisterClassService extends BaseService<
       return false;
     };
     if (inforStudent.level <= 12 && checkLevel()) {
-      throw new HttpException(
-        "Can only register the same level",
-        HttpStatus.BAD_REQUEST
-      );
+      throw new ClientExeption("Chỉ có thể đăng kí lớp cùng level!");
     }
+
     if (
-      registerList.some((item) => {
-        if (typeof item.studentId === "object" && item.studentId !== null) {
-          if ((item.studentId as Student)?.id === resgiterClassForm.studentId)
-            return true;
-          return false;
-        } else {
-          return false;
-        }
-      })
+      registerList.some(
+        (item) => item.studentId === resgiterClassForm.studentId
+      )
     ) {
-      throw new HttpException(
-        "Student Have Registered",
-        HttpStatus.BAD_REQUEST
+      throw new ClientExeption(
+        `${inforStudent.level < 12 ? "Học sinh" : "Sinh viên"} đã đăng ký lớp này!`
       );
     }
   }

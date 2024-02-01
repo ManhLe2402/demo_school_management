@@ -6,11 +6,13 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from "@nestjs/common";
 import { SubjectService } from "../../domain/service/subject";
 
 import {
   CreateSubjectDTO,
+  SearchSubjectDTO,
   UpdateSubjectDTO,
 } from "../../domain/dto/subject.dto";
 
@@ -24,8 +26,8 @@ export class SubjectController {
   }
 
   @Get()
-  async findAll() {
-    return this.subjectService.find({});
+  async findAll(@Query() searchSubject: SearchSubjectDTO) {
+    return this.subjectService.find(searchSubject);
   }
 
   @Get(":id")

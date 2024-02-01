@@ -15,18 +15,15 @@ import { SearchCommonDTO } from "./common/search.dto";
 export class CreateTeacherDTO extends CreatePersonDTO {
   @IsNumber()
   @IsNotEmpty()
-  @Expose()
   yearStartTeaching: number;
 
   @IsString()
   @IsNotEmpty()
-  @Expose()
   @IsIn(["active", "inactive"])
   teachingStatus: string;
 
   @IsNotEmpty()
   @IsUUID()
-  @Expose()
   schoolId: string;
 
   @Transform(({ value }) => value, { toClassOnly: true })
@@ -34,7 +31,6 @@ export class CreateTeacherDTO extends CreatePersonDTO {
 }
 
 export class GetTeacherDTO extends CreateTeacherDTO {
-  @Expose()
   id: string;
 
   @Exclude()
@@ -42,7 +38,6 @@ export class GetTeacherDTO extends CreateTeacherDTO {
 }
 
 export class UpdateTeacherDTO extends CreateTeacherDTO {
-  @Expose()
   @IsNotEmpty()
   @IsUUID()
   id: string;

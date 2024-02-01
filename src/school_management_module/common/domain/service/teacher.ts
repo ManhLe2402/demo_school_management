@@ -1,7 +1,11 @@
 import { Injectable } from "@nestjs/common";
 
 import { TeacherRepository } from "../repository/teacher";
-import { CreateTeacherDTO, UpdateTeacherDTO } from "../dto/teacher.dto";
+import {
+  CreateTeacherDTO,
+  SearchTeacherDTO,
+  UpdateTeacherDTO,
+} from "../dto/teacher.dto";
 import { Teacher } from "../model/teacher";
 import {
   BaseService,
@@ -34,6 +38,7 @@ export class TeacherService extends BaseService<
       id: createDataDTO.schoolId,
     });
     if (!checkSchool) throw new ClientExeption("Trường không tồn tại!");
+
     return super.create(createDataDTO);
   }
 
@@ -48,13 +53,37 @@ export class TeacherService extends BaseService<
 
     return super.update(filter, updateDataDTO);
   }
-  // async findOne(
-  //   filter: FilterQuery<Teacher>,
-  //   queryOption?: QueryOption<Teacher>
-  // ): Promise<Loaded<Teacher, never, "*", never>> {
-  //   console.log(filter);
-  //   const data = await this.em.findOne(filter, );
-  //   console.log("check DATA", data);
-  //   return data as any;
-  // }
+  async findOne(
+    filter: FilterQuery<Teacher>,
+    queryOption?: QueryOption<Teacher>
+  ): Promise<Teacher> {
+    return this.em.findOne(Teacher, filter, {
+      ...queryOption,
+      populate: ["school"],
+    });
+  }
+
+  async find(
+    searchTeacherDTO: SearchTeacherDTO,
+    queryOption?: QueryOption<Teacher>
+  ): Promise<Teacher[]> {
+    const { fullName, schoolId, page, pageSize } = searchTeacherDTO;
+    const conditionSearch: FilterQuery<Teacher> = {
+      ...(fullName
+        ? {
+            $or: [
+              { firstName: { $like: `%${fullName}%` } },
+              { lastName: { $like: `%${fullName}%` } },
+            ],
+          }
+        : {}),
+      ...(schoolId ? { schoolId } : {}),
+    };
+
+    return this.em.find(Teacher, conditionSearch, {
+      populate: ["school"],
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+    });
+  }
 }

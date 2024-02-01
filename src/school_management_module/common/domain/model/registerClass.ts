@@ -30,16 +30,21 @@ export class RegisterClass {
   @ManyToOne(() => SubjectClass, {
     cascade: [Cascade.REMOVE],
     ref: true,
+    persist: false,
   })
   subjectClass: Ref<SubjectClass>;
 
-  @Property({ type: "uuid", persist: false })
+  @Property({ type: "uuid", hidden: true })
   subjectClassId: string;
 
-  @ManyToOne(() => Student, { cascade: [Cascade.REMOVE], ref: true })
+  @ManyToOne(() => Student, {
+    cascade: [Cascade.REMOVE],
+    ref: true,
+    persist: false,
+  })
   student: Ref<Student>;
 
-  @Property({ type: "uuid", persist: false })
+  @Property({ type: "uuid", hidden: true })
   studentId: string;
 
   @Property({ default: null })

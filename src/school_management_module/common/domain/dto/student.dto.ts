@@ -29,6 +29,10 @@ export class SearchStudentDTO extends SearchCommonDTO {
   fullName: string;
 
   @IsOptional()
+  @IsUUID()
+  schoolId: string;
+
+  @IsOptional()
   level: number;
 
   @IsOptional()

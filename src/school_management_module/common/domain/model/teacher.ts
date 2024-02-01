@@ -10,9 +10,13 @@ export class Teacher extends Person {
   @Property({ type: "text", default: "active" })
   teachingStatus!: string;
 
-  @ManyToOne(() => School, { cascade: [Cascade.REMOVE], ref: true })
+  @ManyToOne(() => School, {
+    cascade: [Cascade.REMOVE],
+    ref: true,
+    persist: false,
+  })
   school: Ref<School>;
 
-  @Property({ type: "uuid", persist: false, nullable: false })
+  @Property({ hidden: true, type: "uuid" })
   schoolId!: string;
 }

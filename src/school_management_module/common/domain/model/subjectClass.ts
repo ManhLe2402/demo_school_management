@@ -7,7 +7,7 @@ import {
   Ref,
   Unique,
 } from "@mikro-orm/core";
-
+import { v4 as uuid } from "uuid";
 import { Teacher } from "./teacher";
 import { Subject } from "./subject";
 
@@ -15,7 +15,7 @@ import { Subject } from "./subject";
 export class SubjectClass {
   @PrimaryKey({ type: "uuid" })
   @Unique()
-  id!: string;
+  id: string = uuid();
 
   @Property()
   maxQuantity!: number;
@@ -35,27 +35,35 @@ export class SubjectClass {
   @Property()
   academicYear!: number;
 
-  @Property()
+  @Property({ hidden: true })
   createAt = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @Property({ onUpdate: () => new Date(), hidden: true })
   updateAt = new Date();
 
-  @Property({ type: "timestamptz" })
+  @Property({ type: "timestamptz", hidden: true })
   deleteAt = null;
 
   @Property({ default: "active" })
   classStatus!: string;
 
-  @ManyToOne(() => Teacher, { cascade: [Cascade.REMOVE], ref: true })
+  @ManyToOne(() => Teacher, {
+    cascade: [Cascade.REMOVE],
+    ref: true,
+    persist: false,
+  })
   teacher: Ref<Teacher>;
 
-  @Property({ type: "uuid", persist: false })
+  @Property({ type: "uuid", hidden: true })
   teacherId!: string;
 
-  @ManyToOne(() => Subject, { cascade: [Cascade.REMOVE], ref: true })
+  @ManyToOne(() => Subject, {
+    cascade: [Cascade.REMOVE],
+    ref: true,
+    persist: false,
+  })
   subject: Ref<Subject>;
 
-  @Property({ type: "uuid", persist: false })
+  @Property({ type: "uuid", hidden: true })
   subjectId!: string;
 }

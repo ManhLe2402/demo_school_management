@@ -1,5 +1,5 @@
 import { config } from "src/module/_core/infras/env/default.env";
-
+import { v4 as uuid } from "uuid";
 import {
   Entity,
   OneToMany,
@@ -10,9 +10,9 @@ import {
 
 @Entity({ schema: "school_management" })
 export class Subject {
-  @PrimaryKey({ type: "uuid" })
+  @PrimaryKey({ type: "uuid", nullable: false })
   @Unique()
-  id!: string;
+  id: string = uuid();
 
   @Property({ type: "text" })
   subjectName!: string;
@@ -26,12 +26,12 @@ export class Subject {
   @Property({ type: "text", default: "active" })
   subjectStatus: string;
 
-  @Property()
+  @Property({ hidden: true })
   createAt = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @Property({ onUpdate: () => new Date(), hidden: true })
   updateAt = new Date();
 
-  @Property({ type: "timestamptz" })
+  @Property({ type: "timestamptz", hidden: true })
   deleteAt = null;
 }

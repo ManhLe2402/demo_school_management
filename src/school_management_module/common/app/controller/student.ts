@@ -6,10 +6,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from "@nestjs/common";
 import { StudentService } from "../../domain/service/student";
 import {
   CreateStudentDTO,
+  SearchStudentDTO,
   UpdateStudentDTO,
 } from "../../domain/dto/student.dto";
 
@@ -23,8 +25,8 @@ export class StudentController {
   }
 
   @Get()
-  async findAll() {
-    return this.studentService.find({});
+  async findAll(@Query() searchStudent: SearchStudentDTO) {
+    return this.studentService.find(searchStudent);
   }
 
   @Get(":id")

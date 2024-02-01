@@ -31,7 +31,7 @@ export class GetSubjectDTO extends CreateSubjectDTO {
 }
 export class UpdateSubjectDTO extends CreateSubjectDTO {
   @IsNotEmpty()
-  @IsUUID()
+  @IsNumber()
   id: string;
 }
 export class SearchSubjectDTO extends SearchCommonDTO {

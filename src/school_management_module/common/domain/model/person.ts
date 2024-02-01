@@ -11,19 +11,19 @@ export class Person {
   @Property({ type: "text" })
   lastName!: string;
 
-  @Property()
+  @Property({ type: "text" })
   address!: string;
 
-  @Property()
+  @Property({ type: "text" })
   gender!: string;
 
   @Property({ type: "timestamp" })
   dateOfBirth!: Date;
 
-  @Property()
+  @Property({ type: "text" })
   phone!: string;
 
-  @Property()
+  @Property({ type: "text" })
   email: string = null;
 
   @Property({ hidden: true })

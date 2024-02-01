@@ -40,10 +40,7 @@ export class TeacherController {
         : {}),
       ...(schoolId ? { schoolId } : {}),
     };
-    return this.teacherService.find(conditionSearch, {
-      page,
-      pageSize,
-    });
+    return this.teacherService.find(searchTeacherDTO);
   }
 
   @Get(":id")
