@@ -18,13 +18,13 @@ export class RegisterClass {
   @Unique()
   id: string = uuidv4();
 
-  @Property()
+  @Property({ hidden: true })
   createAt = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @Property({ onUpdate: () => new Date(), hidden: true })
   updateAt = new Date();
 
-  @Property({ type: "timestamptz" })
+  @Property({ type: "timestamptz", hidden: true })
   deleteAt = null;
 
   @ManyToOne(() => SubjectClass, {

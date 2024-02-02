@@ -116,9 +116,27 @@ export class RegisterClassService extends BaseService<
     return super.update({ id: updateData.id }, updateData);
   }
 
-  // async findAndCount(searchRegister:SearchRegisterClassDTO, queryOption?: QueryOption<RegisterClass>): Promise<[Loaded<RegisterClass, never, "*", never>[], number]> {
-  //   const {}=
+  async findAndCount(
+    searchRegister: SearchRegisterClassDTO,
+    queryOption?: QueryOption<RegisterClass>
+  ): Promise<[Loaded<RegisterClass, never, "*", never>[], number]> {
+    const { page, pageSize, studentId, subjectClassId } = searchRegister;
+    const conditionSearch: FilterQuery<RegisterClass> = {
+      ...(studentId ? { studentId } : {}),
+      ...(subjectClassId ? { subjectClassId } : {}),
+    };
+    queryOption = {
+      ...queryOption,
+      page,
+      pageSize,
+      populate: [
+        "subjectClass",
+        "student",
+        "subjectClass.teacher",
+        "subjectClass.subject",
+      ],
+    };
 
-  //   return
-  // }
+    return super.findAndCount(conditionSearch, queryOption);
+  }
 }

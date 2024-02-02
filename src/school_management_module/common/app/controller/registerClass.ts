@@ -27,7 +27,8 @@ export class RegisterClassController {
 
   @Get()
   async findAll(@Query() searchRegister: SearchRegisterClassDTO) {
-    return this.registerClassService.find(searchRegister);
+    const data = await this.registerClassService.findAndCount(searchRegister);
+    return { count: data[1], data: data[0] };
   }
 
   @Get(":id")
