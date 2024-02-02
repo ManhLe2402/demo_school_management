@@ -11,7 +11,7 @@ import { FormatResponseInterceptor } from "./module/_core/app/middleware/interce
 async function bootstrap() {
   const { port } = config;
   dotenv.config();
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   await app.get(MikroORM).getSchemaGenerator().ensureDatabase();
   const updateDump = await app
     .get(MikroORM)
