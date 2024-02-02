@@ -6,6 +6,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { MikroORM } from "@mikro-orm/core";
 import * as dotenv from "dotenv";
 import { config } from "./module/_core/infras/env/default.env";
+import { FormatResponseInterceptor } from "./module/_core/app/middleware/interceptor/formatResponse";
 
 async function bootstrap() {
   const { port } = config;
@@ -26,6 +27,8 @@ async function bootstrap() {
       whitelist: true,
     })
   );
+  app.useGlobalInterceptors(new FormatResponseInterceptor());
+
   await app.listen(port, () => console.log(`App run in ${port}`));
 }
 bootstrap();

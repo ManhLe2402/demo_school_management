@@ -92,6 +92,7 @@ export class BaseRepository<
   ) {
     return this.raw.findAndCount(filterQuery, this.getQueryOption(queryOption));
   }
+
   async findOne(
     filterQuery: FilterQuery<Entity>,
     queryOption?: QueryOption<Entity>

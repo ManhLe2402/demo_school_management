@@ -6,11 +6,12 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 
 import { config } from "src/module/_core/infras/env/default.env";
-import { CommonModule } from "src/school_management_module/common/common.module";
+
 import { AppExceptionModule } from "src/module/_core/module/appExceptionFilter.module";
 import { AllExceptionsFilter } from "src/module/_core/app/middleware/filter/allException";
 import { HttpExceptionFilter } from "src/module/_core/app/middleware/filter/httpException";
 import { PostgresExceptionFilter } from "src/module/_core/app/middleware/filter/postgresExeption";
+import { CommonModule } from "src/module/school_management_module/common.module";
 
 @Module({
   imports: [

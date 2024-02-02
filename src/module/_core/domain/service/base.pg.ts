@@ -36,6 +36,7 @@ export class BaseService<
   ) {
     return this.repository.findAndCount(filter, queryOption);
   }
+
   build(createDataDTO: CreateDataDTO): Entity {
     return this.repository.build(createDataDTO);
   }
