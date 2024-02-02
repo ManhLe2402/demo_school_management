@@ -100,7 +100,7 @@ export class SubjectClassService extends BaseService<
     filter: FilterQuery<SubjectClass>,
     queryOption?: QueryOption<SubjectClass>
   ): Promise<any> {
-    return this.em.find(SubjectClass, filter, {
+    return this.em.findOne(SubjectClass, filter, {
       populate: ["subject", "teacher"],
     });
   }
