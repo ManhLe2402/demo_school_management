@@ -11,7 +11,7 @@ export interface QueryOption<T = any> {
   order?: OrderQuery;
   page?: number;
   pageSize?: number;
-  populate?: Populate<T> | string[];
+  populate?: any | {};
 }
 
 export interface CreateOption {
