@@ -8,6 +8,7 @@ import { GetSubjectClassDTO } from "./subjecClass.dto";
 
 export class CreateRegisterClassDTO {
   id: string;
+
   @IsNotEmpty()
   @IsUUID()
   studentId: string;
