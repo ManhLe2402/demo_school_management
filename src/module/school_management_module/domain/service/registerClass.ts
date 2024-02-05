@@ -31,4 +31,7 @@ export class RegisterClassService extends BaseService<
   ) {
     super(registerClassRepository);
   }
+  async update(updateDataDTO: UpdateRegisterClassDTO): Promise<boolean> {
+    return this.registerClassRepository.update(updateDataDTO);
+  }
 }

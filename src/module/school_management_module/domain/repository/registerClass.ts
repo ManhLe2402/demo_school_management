@@ -23,7 +23,7 @@ export class RegisterClassRepository extends BaseRepository<RegisterClass> {
     resgiterClassForm: CreateRegisterClassDTO | UpdateRegisterClassDTO
   ) {
     const now = new Date().getTime();
-
+    console.log("shdfóahodfu", resgiterClassForm);
     const inforSubjectClass = await this.em.findOne(
       SubjectClass,
       {
@@ -44,14 +44,15 @@ export class RegisterClassRepository extends BaseRepository<RegisterClass> {
     const inforStudent = await this.em.findOne(Student, {
       id: resgiterClassForm.studentId,
     });
-    if (inforStudent.enrollmentStatus !== "active") {
-      throw new ClientExeption(
-        `${inforStudent.level < 12 ? "Học sinh" : "Sinh viên"} không thể đăng ký lớp!`
-      );
-    }
     if (!inforStudent) {
       throw new ClientExeption(
-        `${inforStudent.level < 12 ? "Học sinh" : "Sinh viên"} không tồn tại!`
+        `${inforStudent?.level < 12 ? "Học sinh" : "Sinh viên"} không tồn tại!`
+      );
+    }
+
+    if (inforStudent.enrollmentStatus !== "active") {
+      throw new ClientExeption(
+        `${inforStudent?.level < 12 ? "Học sinh" : "Sinh viên"} không thể đăng ký lớp!`
       );
     }
     const registerList = await this.em.find(

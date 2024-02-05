@@ -38,10 +38,7 @@ export class RegisterClassController {
 
   @Put()
   async update(@Body() updateRegisterClass: UpdateRegisterClassDTO) {
-    return this.registerClassService.update(
-      { id: updateRegisterClass.id },
-      updateRegisterClass
-    );
+    return this.registerClassService.update(updateRegisterClass);
   }
 
   @Delete(":id")
