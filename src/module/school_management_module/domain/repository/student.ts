@@ -85,7 +85,7 @@ export class StudentRepository extends BaseRepository<Student> {
   ): Promise<[Loaded<Student, never, "*", never>[], number]> {
     const { fullName, schoolId, page, pageSize, enrollmentStatus, level } =
       searchStudent;
-    const populate = getPopulateStudent(queryOption.populate);
+    const populate = getPopulateStudent(queryOption.populate || {});
 
     queryOption = { ...queryOption, page, pageSize, populate };
     const conditionSearch: FilterQuery<Student> = {
