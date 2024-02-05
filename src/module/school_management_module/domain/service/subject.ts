@@ -23,28 +23,4 @@ export class SubjectService extends BaseService<
   ) {
     super(subjectRepository);
   }
-  async find(
-    searchSubject: SearchSubjectDTO,
-    queryOption?: QueryOption<Subject>
-  ): Promise<Subject[]> {
-    const { page, pageSize, subjectName } = searchSubject;
-    const conditionSearch: FilterQuery<Subject> = {
-      ...(subjectName ? { subjectName } : {}),
-    };
-    return this.em.find(Subject, conditionSearch, {
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
-    });
-  }
-
-  async findAndCount(
-    searchSubject: SearchSubjectDTO,
-    queryOption?: QueryOption<Subject>
-  ): Promise<[Loaded<Subject, never, "*", never>[], number]> {
-    const { page, pageSize, subjectName } = searchSubject;
-    const conditionSearch: FilterQuery<Subject> = {
-      ...(subjectName ? { subjectName } : {}),
-    };
-    return super.findAndCount(conditionSearch, searchSubject);
-  }
 }

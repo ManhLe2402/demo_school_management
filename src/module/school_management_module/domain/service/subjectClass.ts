@@ -25,83 +25,11 @@ export class SubjectClassService extends BaseService<
   UpdateSubjectClassDTO
 > {
   constructor(
-    private readonly subjecClassRepository: SubjectClassRepository,
+    private readonly subjectClassRepository: SubjectClassRepository,
     private readonly teacherRepository: TeacherRepository,
     private readonly subjectRepository: SubjectRepository,
     private readonly em: EntityManager
   ) {
-    super(subjecClassRepository);
-  }
-  async checkDependency(data: CreateSubjectClassDTO | UpdateSubjectClassDTO) {
-    const { teacherId, subjectId } = data;
-    const checkTeacher = await this.teacherRepository.findOne({
-      id: teacherId,
-    });
-    if (!checkTeacher) throw new ClientExeption("Giáo viên không tồn tại!");
-
-    const checkSubject = await this.subjectRepository.findOne({
-      id: subjectId,
-    });
-    if (!checkSubject) throw new ClientExeption("Môn học không tồn tại!");
-  }
-  async create(
-    newData: CreateSubjectClassDTO,
-    options?: ICreateOption<SubjectClass>
-  ): Promise<SubjectClass> {
-    await this.checkDependency(newData);
-    return super.create(newData);
-  }
-  async update(
-    filter: FilterQuery<SubjectClass>,
-    updateData: UpdateSubjectClassDTO
-  ): Promise<boolean> {
-    await this.checkDependency(updateData);
-    return super.update(filter, updateData);
-  }
-  async find(
-    searchSubjectClass: SearchSubjectClassDTO,
-    queryOption?: QueryOption<SubjectClass>
-  ): Promise<SubjectClass[]> {
-    const { teacherId, subjectId, page, pageSize, academicYear } =
-      searchSubjectClass;
-    const conditionSearch: FilterQuery<SubjectClass> = {
-      ...(subjectId ? { subjectId } : {}),
-      ...(teacherId ? { teacherId } : {}),
-      ...(academicYear ? { academicYear } : {}),
-    };
-    return this.em.find(SubjectClass, conditionSearch, {
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
-      populate: ["subject", "teacher"],
-    });
-  }
-
-  async findAndCount(
-    searchSubjectClass: SearchSubjectClassDTO,
-    queryOption?: QueryOption<SubjectClass>
-  ): Promise<[Loaded<SubjectClass, never, "*", never>[], number]> {
-    const { teacherId, subjectId, page, pageSize, academicYear } =
-      searchSubjectClass;
-    queryOption = {
-      ...queryOption,
-      page,
-      pageSize,
-      populate: ["subject", "teacher"],
-    };
-    const conditionSearch: FilterQuery<SubjectClass> = {
-      ...(subjectId ? { subjectId } : {}),
-      ...(teacherId ? { teacherId } : {}),
-      ...(academicYear ? { academicYear } : {}),
-    };
-    return super.findAndCount(conditionSearch, queryOption);
-  }
-
-  async findOne(
-    filter: FilterQuery<SubjectClass>,
-    queryOption?: QueryOption<SubjectClass>
-  ): Promise<any> {
-    return this.em.findOne(SubjectClass, filter, {
-      populate: ["subject", "teacher"],
-    });
+    super(subjectClassRepository);
   }
 }
